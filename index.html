@@ -7,16 +7,25 @@
     <title>Mine Sweeper</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body onload="onInit()">
+<body onload="onInit()" oncontextmenu="return false">
     <h1>Mine Sweeper Game</h1>
 
-    <h2>Your time: <span>0.000</span></h2>
-    <!-- <h2 class="time">0.000</h2> -->
+    <div class="levels">
+        <button onclick="changeLevel('Beginner')">Beginner</button>
+        <button onclick="changeLevel('Medium')">Medium</button>
+        <button onclick="changeLevel('Expert')">Expert</button>
+    </div>
 
-    <div class="board-container">
-        
+    <h2>Your time: <span>0.000</span></h2>
+
+    <div class="board-container"></div>
+
+    <div class="modal">
+        <button onclick="onCloseModal()">play again</button>
+        <h2>Game Over!</h2>
     </div>
     
+    <!-- <button oncontextmenu="cellClickedMenu(this)">blaaa</button> -->
     <script src="js/utils.js"></script>
     <script src="js/initial.js"></script>
     <script src="js/game.js"></script>  

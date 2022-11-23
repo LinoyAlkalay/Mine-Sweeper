@@ -13,7 +13,7 @@ table {
     margin: auto;
     width: 400px;
     height: 400px;
-    padding: 10px;
+    /* padding: 10px; */
     align-items: center;
     table-layout: fixed;
 }
@@ -27,10 +27,16 @@ table {
     font-size: 24px;
     cursor: pointer;
     overflow: hidden;
+    border-top: 4px solid #8C8C8C;
+    border-left: 4px solid #8C8C8C;
+    border-bottom: 4px solid #595959;
+    border-right: 4px solid #595959;
 }
 
-h2, span {
+h2,
+span {
     color: #8C8C8C;
+    font-size: 18px;
 }
 
 .cell:active {
@@ -43,8 +49,64 @@ h2, span {
 
 .mine {
     background-color: #BF9788;
+    border: 4px solid #BF9788;
 }
 
-.empty {
-    background-color: black;
+.shown {
+    background-color: #BFBEBA;
+    border: 4px solid #BFBEBA;
+}
+
+.modal {
+    width: 300px;
+    height: 100px;
+    background-color: #BF9788;
+    text-align: center;
+    border-radius: 5px;
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px;
+}
+
+.modal h2 {
+    color: whitesmoke;
+}
+
+.modal button {
+    width: 100px;
+    height: 30px;
+    background-color: whitesmoke;
+    color: #BF9788;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.modal button:hover {
+    background-color: #BF9788;
+    border: solid whitesmoke;
+    color: whitesmoke;
+}
+
+.levels button {
+    width: 120px;
+    height: 30px;
+    background-color: #8C8C8C;
+    color: whitesmoke;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    /* border-top: 4px solid #8C8C8C;
+    border-left: 4px solid #8C8C8C;
+    border-bottom: 4px solid #595959;
+    border-right: 4px solid #595959; */
+}
+
+.levels button:hover {
+    background-color: #BF9788;
+    color: whitesmoke;
 }

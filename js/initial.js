@@ -4,13 +4,17 @@
 var gBoard
 var gLevel
 var gGame
+
 const MINE_IMG = '<img src="img/mine.png">'
+const FLAG_IMG = '<img src="img/flag.png">'
 
 // This is called when page loads
-function onInit() {
-    if(gIntervalTimer) clearInterval(gIntervalTimer)
+function onInit(level = { size: 4, mines: 2 }) {
+    if (gIntervalTimer) clearInterval(gIntervalTimer)
     resetTime()
-    gLevel = createLevelGame()
+    gShownCell = 0
+    gFirstClick = 0
+    gLevel = level
     gBoard = buildBoard(gLevel)
     console.log('gBoard:', gBoard)
     renderBoard(gBoard, '.board-container')
@@ -19,7 +23,7 @@ function onInit() {
 // DONE: Render the board as a <table> to the page
 // DONE: Builds the board 
 function buildBoard(gLevel) {
-    const size = gLevel.SIZE
+    const size = gLevel.size
     const board = []
     for (var i = 0; i < size; i++) {
         board.push([])
@@ -41,7 +45,7 @@ function setMinesNegsCount(board) {
 }
 
 function addMines(gBoard, gLevel) {
-    for (var i = 0; i < gLevel.MINES; i++) {
+    for (var i = 0; i < gLevel.mines; i++) {
         var locationEmptyCell = getRandomEmptyCell(gBoard)
         gBoard[locationEmptyCell.i][locationEmptyCell.j].isMine = true
     }
@@ -67,21 +71,17 @@ function neighborLoop(mat, cellI, cellJ) {
 function renderBoard(mat, selector) {
 
     var strHTML = '<table border="0"><tbody>'
-    var strText = ''
     for (var i = 0; i < mat.length; i++) {
         strHTML += '<tr>'
         for (var j = 0; j < mat[0].length; j++) {
             const cell = mat[i][j]
             var className = `cell cell-${i}-${j}`
-            
-            if(!cell.isMine && cell.isShown) strText = cell.minesAroundCount
-            else strText = ''
-            
-            strHTML += `\t<td class="${className}" onclick="cellClicked(this,${i},${j})">\n${strText}`
 
-            if(cell.isMine && cell.isShown) {
-                strHTML += MINE_IMG
-            } 
+            strHTML += `\t<td class="${className}" onclick="cellClicked(this,${i},${j})" 
+            oncontextmenu="cellMarked(this,${i},${j})">\n`
+
+            if (cell.isMarked) strHTML += FLAG_IMG
+            if (cell.isMine && cell.isShown) strHTML += MINE_IMG
 
             strHTML += '\t</td>\n'
         }
@@ -98,15 +98,25 @@ function createCell() {
         minesAroundCount: 0,
         isShown: false,
         isMine: false,
-        isMarked: true
+        isMarked: false
     }
     return cell
 }
 
-function createLevelGame() {
-    const level = {
-        SIZE: 4,
-        MINES: 2
+function changeLevel(level) {
+    if (level === 'Beginner') {
+        gLevel.size = 4
+        gLevel.mines = 2
+        console.log('gLevel:', gLevel)
+    } else if (level === 'Medium') {
+        gLevel.size = 8
+        gLevel.mines = 14
+        console.log('gLevel:', gLevel)
+    } else if (level === 'Expert') {
+        gLevel.size = 12
+        gLevel.mines = 32
+        console.log('gLevel:', gLevel)
     }
-    return level
+
+    onInit(gLevel)
 }

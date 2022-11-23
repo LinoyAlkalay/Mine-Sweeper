@@ -1,7 +1,5 @@
 'use strict'
-
-const FLAG_IMG = '<img src="img/flag.png">'
-
+// !
 function getRandomEmptyCell(gBoard) {
     const emptysCells = []
     for (var i = 0; i < gBoard.length; i++) {
@@ -16,11 +14,57 @@ function getRandomEmptyCell(gBoard) {
 }
 
 // Convert a location object {i, j} to a selector and render a value in that element
+// !
 function renderCell(location, value) {
     const cellSelector = '.' + getClassName(location) // cell-i-j
     const elCell = document.querySelector(cellSelector)
     elCell.innerHTML = value
 }
+
+// !
+function onOpenModal(boolean) {
+    resetTime()
+    const elModal = document.querySelector('.modal')
+    const elH2Modal = elModal.querySelector('h2')
+    if (boolean) elH2Modal.innerText = 'You Won!'
+    elModal.style.display = 'block'
+}
+
+// !
+function onCloseModal() {
+    const elModal = document.querySelector('.modal')
+    elModal.style.display = 'none'
+    onInit()
+}
+
+// !
+function startTimer() {
+    gStartTime = Date.now()
+    gIntervalTimer = setInterval(() => {
+        const seconds = (Date.now() - gStartTime) / 1000
+        var elH2Span = document.querySelector('span')
+        elH2Span.innerText = seconds.toFixed(3)
+    }, 1)
+}
+
+// !
+function resetTime() {
+    clearInterval(gIntervalTimer)
+    var elH2Span = document.querySelector('span')
+    elH2Span.innerText = '0.000'
+}
+
+// !
+function drawNum(nums) {
+    var randIdx = getRandomInt(0, nums.length)
+    var num = nums[randIdx]
+    nums.splice(randIdx, 1)
+    return num
+}
+
+
+
+
 
 // Returns the class name for a specific cell
 function getClassName(location) {
@@ -37,14 +81,6 @@ function getCellCoord(strCellId) {
     return coord
 }
 
-// drawNum
-function drawNum(nums) {
-    var randIdx = getRandomInt(0, nums.length)
-    var num = nums[randIdx]
-    nums.splice(randIdx, 1)
-    return num
-}
-
 function createNums(length) {
     const nums = []
     for (var i = 1; i <= length; i++) {
@@ -52,19 +88,6 @@ function createNums(length) {
     }
     return nums
 }
-
-
-
-// function onOpenModal() {
-//     const elModal = document.querySelector('.modal')
-//     elModal.style.display = 'block'
-// }
-
-// function onCloseModal() {
-//     const elModal = document.querySelector('.modal')
-//     elModal.style.display = 'none'
-//     onInit()
-// }
 
 function hideElement(selector) {
     const el = document.querySelector(selector)
@@ -76,7 +99,6 @@ function showElement(selector) {
     el.classList.remove('hidden')
 }
 
-// getRandomColor
 function getRandomColor() {
     var letters = '0123456789ABCDEF'
     var color = '#'
