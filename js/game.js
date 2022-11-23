@@ -22,6 +22,12 @@ function buildBoard(size) {
         for (var j = 0; j < size; j++) {
             board[i][j] = createCell()
             board[i][j].isMine = (Math.random() < 2 / 16) ? true : false
+
+        }
+    }
+
+    for (var i = 0; i < size; i++) {
+        for (var j = 0; j < size; j++) {
             board[i][j].minesAroundCount = setMinesNegsCount(board, i, j)
         }
     }
