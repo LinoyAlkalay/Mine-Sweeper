@@ -1,0 +1,43 @@
+body {
+    margin: 0px;
+    background-color: whitesmoke;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+    color: #BF9788;
+}
+
+table {
+    margin: auto;
+    width: 400px;
+    height: 400px;
+    padding: 10px;
+    align-items: center;
+}
+
+.cell {
+    background-color: #595959;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: #BFBEBA;
+}
+
+.cell img {
+    width: 30px;
+}
+
+.mine {
+    background-color: #BF9788;
+}
+
+.empty {
+    background-color: black;
+}
