@@ -1,83 +1,39 @@
 'use strict'
 
-// global variables
-var gBoard
-var gLevel
-var gGame
+var gStartTime
+var gIntervalTimer
 
-// This is called when page loads
-function onInit() {
-    gLevel = createLevelGame()
-    gBoard = buildBoard(gLevel.SIZE)
-    console.log('gBoard:', gBoard)
-    renderBoard(gBoard, '.board-container')
+function startTimer() {
+    gStartTime = Date.now() 
+    gIntervalTimer = setInterval(() => {
+        const seconds = (Date.now() - gStartTime) / 1000
+        var elH2Span = document.querySelector('span')
+        elH2Span.innerText = seconds.toFixed(3)
+    }, 1)
 }
 
-// DONE: Render the board as a <table> to the page
-// DONE: Builds the board 
-function buildBoard(size) {
-    const board = []
-    for (var i = 0; i < size; i++) {
-        board.push([])
-        for (var j = 0; j < size; j++) {
-            board[i][j] = createCell()
-            board[i][j].isMine = (Math.random() < 2 / 16) ? true : false
-
-        }
-    }
-
-    for (var i = 0; i < size; i++) {
-        for (var j = 0; j < size; j++) {
-            board[i][j].minesAroundCount = setMinesNegsCount(board, i, j)
-        }
-    }
-
-    // TODO: Set mines at random locations Call setMinesNegsCount() Return the created board
-    // console.log('board:', board)
-    return board
+function resetTime() {
+    var elH2Span = document.querySelector('span')
+    elH2Span.innerText = '0.000'
 }
 
-function createLevelGame() {
-    const level = {
-        SIZE: 4,
-        MINES: 2
-    }
-    return level
-}
-
-function createCell() {
-    const cell = {
-        minesAroundCount: 0,
-        isShown: false,
-        isMine: false,
-        isMarked: true
-    }
-    return cell
-}
-
-// TODO: Count mines around each cell and set the cell's minesAroundCount -> neighborLoop
-function setMinesNegsCount(mat, cellI, cellJ) {
-    if (mat[cellI][cellJ].isMine)return
-
-    var neighborsCount = 0
-    console.log(cellI, cellJ);
-    for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= mat.length) continue
-        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-            if (i === cellI && j === cellJ) continue
-            if (j < 0 || j >= mat[i].length) continue
-
-            if (mat[i][j].isMine) neighborsCount++
-            console.log('mat[i][j]:', mat[i][j])
-        }
-    }
-    console.log('neighborsCount:', neighborsCount)
-    return neighborsCount
-}
-
-// TODO: Called when a cell (td) is clicked
+// DONE: Called when a cell (td) is clicked
 function cellClicked(elCell, i, j) {
+    startTimer()
+    console.log('{i, j}:', { i, j })
+    const targetCell = gBoard[i][j]
+    targetCell.isMarked = true
 
+    elCell.style.backgroundColor = '#BFBEBA'
+    var value = null
+    if (targetCell.isMine) {
+        value = MINE_IMG
+        elCell.style.backgroundColor = '#BF9788'
+    } else {
+        value = targetCell.minesAroundCount
+    }
+
+    renderCell({ i, j }, value)
 }
 
 // TODO: Called on right click to mark a cell (suspected to be a mine) 

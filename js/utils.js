@@ -1,72 +1,18 @@
 'use strict'
 
-const MINE_IMG = '<img src="img/mine.png">'
 const FLAG_IMG = '<img src="img/flag.png">'
 
-function renderBoard(mat, selector) {
-
-    var strHTML = '<table border="0"><tbody>'
-    var strText = ''
-    for (var i = 0; i < mat.length; i++) {
-        strHTML += '<tr>'
-        for (var j = 0; j < mat[0].length; j++) {
-            const cell = mat[i][j]
-            var className = `cell cell-${i}-${j}`
-            
-            if(cell.isMine) className += ' mine'
-            // else if(!cell.isMine) className += ' empty'
-            
-            if(!cell.isMine) {
-                strText = cell.minesAroundCount
-            } else {
-                strText = ''
-            }
-            
-            strHTML += `\t<td class="${className}">\n${strText}`
-
-            if(cell.isMine) {
-                strHTML += MINE_IMG
-            } 
-
-            strHTML += '\t</td>\n'
-        }
-        strHTML += '</tr>'
-    }
-    strHTML += '</tbody></table>'
-
-    const elContainer = document.querySelector(selector)
-    elContainer.innerHTML = strHTML
-}
-
-
-
-
-
-
-// getEmptyCell
-function findEmptyPos() {
-
+function getRandomEmptyCell(gBoard) {
+    const emptysCells = []
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[0].length; j++) {
-            const cell = gBoard[i][j]
-            if (!cell) {
-                return { i, j }
+            if (!gBoard[i][j].isMine) {
+                emptysCells.push({ i, j })
             }
         }
     }
-}
-
-// createBoard
-function createBoard(rows, cols) {
-    const Board = []
-    for (var i = 0; i < rows; i++) {
-        const row = []
-        for (var j = 0; j < cols; j++) {
-            row.push('')
-        }
-        Board.push(row)
-    }
-    return Board
+    var locationEmptyCell = drawNum(emptysCells)
+    return locationEmptyCell
 }
 
 // Convert a location object {i, j} to a selector and render a value in that element
@@ -89,22 +35,6 @@ function getCellCoord(strCellId) {
     coord.i = +parts[1]
     coord.j = +parts[2]
     return coord
-}
-
-// countNeighbors
-function neighborLoop(gBoard, rowIdx, colIdx) {
-    var neighborsCount = 0
-    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue
-
-        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-            if (i === rowIdx && j === colIdx) continue
-            if (j < 0 || j >= gBoard[0].length) continue
-            var currCell = gBoard[i][j]
-            if (currCell === OBJECT) neighborsCount++
-        }
-    }
-    return neighborsCount
 }
 
 // drawNum

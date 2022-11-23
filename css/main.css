@@ -15,23 +15,30 @@ table {
     height: 400px;
     padding: 10px;
     align-items: center;
+    table-layout: fixed;
 }
 
 .cell {
     background-color: #595959;
-    width: 20px;
-    height: 20px;
+    color: whitesmoke;
+    width: 30px;
+    height: 30px;
     text-align: center;
-    font-size: 16px;
+    font-size: 24px;
     cursor: pointer;
+    overflow: hidden;
 }
 
-.cell:hover {
+h2, span {
+    color: #8C8C8C;
+}
+
+.cell:active {
     background-color: #BFBEBA;
 }
 
 .cell img {
-    width: 30px;
+    width: 25px;
 }
 
 .mine {
