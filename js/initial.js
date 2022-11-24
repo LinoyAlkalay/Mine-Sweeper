@@ -10,10 +10,13 @@ const FLAG_IMG = '<img src="img/flag.png">'
 
 // This is called when page loads
 function onInit(level = { size: 4, mines: 2 }) {
+    const elEmojiBtn = document.querySelector('.emojiBtn')
+    elEmojiBtn.innerText = '😃'
+    
     if (gIntervalTimer) clearInterval(gIntervalTimer)
     resetTime()
-    gShownCell = 0
-    gFirstClick = 0
+    gShownCellCount = 0
+    gFirstClick = true
     gLevel = level
     gBoard = buildBoard(gLevel)
     console.log('gBoard:', gBoard)
@@ -31,6 +34,7 @@ function buildBoard(gLevel) {
             board[i][j] = createCell()
         }
     }
+
     addMines(board, gLevel)
     setMinesNegsCount(board)
     return board
@@ -103,7 +107,7 @@ function createCell() {
     return cell
 }
 
-function changeLevel(level) {
+function onChangeLevel(level) {
     if (level === 'Beginner') {
         gLevel.size = 4
         gLevel.mines = 2
@@ -115,7 +119,6 @@ function changeLevel(level) {
     } else if (level === 'Expert') {
         gLevel.size = 12
         gLevel.mines = 32
-        console.log('gLevel:', gLevel)
     }
 
     onInit(gLevel)

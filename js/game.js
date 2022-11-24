@@ -2,64 +2,76 @@
 
 var gStartTime
 var gIntervalTimer
-var gShownCell = 0
-var gFirstClick = 0
+var gShownCellCount = 0
+var gFirstClick = true
 
 // DONE: Called when a cell (td) is clicked
 function cellClicked(elCell, i, j) {
-    if (gFirstClick === 0) {
-        gFirstClick++
+    const cell = gBoard[i][j]
+
+    if (gFirstClick) {
+        gFirstClick = false
         startTimer()
     }
-
-    const targetCell = gBoard[i][j]
-
-    if (!targetCell.isMarked) {
-        if (!targetCell.isShown) gShownCell++
-        targetCell.isShown = true
+    
+    if (!cell.isMarked) {
+        if (!cell.isShown) gShownCellCount++
+        cell.isShown = true
         elCell.classList.add('shown')
         // elCell.style.backgroundColor = '#BFBEBA'
         var value = null
-        if (targetCell.isMine) {
+        if (cell.isMine) {
             value = MINE_IMG
             elCell.classList.remove('shown')
             elCell.classList.add('mine')
             // elCell.style.backgroundColor = '#BF9788'
         } else {
-            if (targetCell.minesAroundCount) {
-                value = targetCell.minesAroundCount
+            if (cell.minesAroundCount) {
+                value = cell.minesAroundCount
             } else {
-                // CascadingOpenCell(gBoard, i, j)
+                CascadingOpenCell(gBoard, i, j)
                 value = ''
             }
         }
         renderCell({ i, j }, value)
     }
 
-    checkGameOver(targetCell, elCell)
+    checkGameOver(cell)
 }
 
 function CascadingOpenCell(mat, cellI, cellJ) {
+    var value = null
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= mat.length) continue
         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
             if (i === cellI && j === cellJ) continue
             if (j < 0 || j >= mat[i].length) continue
             const cell = mat[i][j]
-            // // if (!cell.minesAroundCount) {
-            //     cell.isShown = true
-            //     const elCell = document.querySelector(`.cell-${i}-${j}`)
-            //     elCell.classList.add('shown')
-            // // }
+            // if (isNeedToStop(cell, i, j)) return
+            if (cell.minesAroundCount) value = cell.minesAroundCount
+            else value = ''
+            if (!cell.isShown) gShownCellCount++
+            cell.isShown = true
+            const elCell = document.querySelector(`.cell-${i}-${j}`)
+            elCell.classList.add('shown')
+            renderCell({ i, j }, value)
+            // CascadingOpenCell(mat, i, j)
         }
     }
 }
 
+// function isNeedToStop(cell, cellI, cellJ) {
+//     if (cell[cellI - 1] === cell.minesAroundCount &&
+//         cell[cellI + 1] === cell.minesAroundCount &&
+//         cell[cellJ - 1] === cell.minesAroundCount &&
+//         cell[cellJ + 1] === cell.minesAroundCount) return true
+// }
+
 // DONE: Called on right click to mark a cell (suspected to be a mine) 
 // DONE: Search the web (and implement) how to hide the context menu on right click
 function cellMarked(elCell, i, j) {
-    if (gFirstClick === 0) {
-        gFirstClick++
+    if (gFirstClick) {
+        gFirstClick = false
         startTimer()
     }
     const targetCell = gBoard[i][j]
@@ -68,15 +80,17 @@ function cellMarked(elCell, i, j) {
     targetCell.isMarked = !targetCell.isMarked
 }
 
-// TODO: Game ends when all mines are marked, and all the other cells are shown
-function checkGameOver(cell, elCell) {
+// DONE: Game ends when all mines are marked, and all the other cells are shown
+function checkGameOver(cell) {
+    const numOfNoMinde = ((gLevel.size) ** 2) - gLevel.mines
+    const elEmojiBtn = document.querySelector('.emojiBtn')
     if (cell.isMine && cell.isShown) {
+        elEmojiBtn.innerText = '🤯'
         endGame(false)
         onOpenModal(false)
     }
-
-    const numOfNoMinde = ((gLevel.size) ** 2) - gLevel.mines
-    if (gShownCell === numOfNoMinde) {
+    if (gShownCellCount === numOfNoMinde) {
+        elEmojiBtn.innerText = '😎'
         endGame(true)
         onOpenModal(true)
     }
@@ -106,5 +120,4 @@ function endGame(boolean) {
 function expandShown(board, elCell, i, j) {
 
 }
-
 

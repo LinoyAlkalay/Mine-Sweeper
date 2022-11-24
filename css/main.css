@@ -7,6 +7,7 @@ body {
 
 h1 {
     color: #BF9788;
+    margin-right: 100px;
 }
 
 table {
@@ -33,10 +34,16 @@ table {
     border-right: 4px solid #595959;
 }
 
-h2,
-span {
+h1 span {
+    float: left;
+    font-size: 16px;
+    margin-left: 20px;
+}
+
+h2, h2 span {
     color: #8C8C8C;
     font-size: 18px;
+    /* display: inline-block; */
 }
 
 .cell:active {
@@ -45,6 +52,20 @@ span {
 
 .cell img {
     width: 25px;
+}
+
+button {
+    background-color: #8C8C8C;
+    color: whitesmoke;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #BF9788;
+    color: whitesmoke;
 }
 
 .mine {
@@ -79,34 +100,37 @@ span {
     height: 30px;
     background-color: whitesmoke;
     color: #BF9788;
-    border: none;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 .modal button:hover {
-    background-color: #BF9788;
     border: solid whitesmoke;
-    color: whitesmoke;
 }
 
 .levels button {
     width: 120px;
     height: 30px;
-    background-color: #8C8C8C;
-    color: whitesmoke;
-    border: none;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 4px;
     /* border-top: 4px solid #8C8C8C;
     border-left: 4px solid #8C8C8C;
     border-bottom: 4px solid #595959;
     border-right: 4px solid #595959; */
 }
 
-.levels button:hover {
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
     background-color: #BF9788;
-    color: whitesmoke;
+    color: white;
+    text-align: center;
+    opacity: 80%;
+}
+
+.emojiBtn {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    padding-right: 25px;
+    margin-bottom: 5px;
 }

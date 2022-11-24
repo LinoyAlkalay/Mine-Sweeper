@@ -42,7 +42,7 @@ function startTimer() {
     gStartTime = Date.now()
     gIntervalTimer = setInterval(() => {
         const seconds = (Date.now() - gStartTime) / 1000
-        var elH2Span = document.querySelector('span')
+        var elH2Span = document.querySelector('h2 span')
         elH2Span.innerText = seconds.toFixed(3)
     }, 1)
 }
@@ -50,7 +50,7 @@ function startTimer() {
 // !
 function resetTime() {
     clearInterval(gIntervalTimer)
-    var elH2Span = document.querySelector('span')
+    var elH2Span = document.querySelector('h2 span')
     elH2Span.innerText = '0.000'
 }
 

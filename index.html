@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,27 +8,38 @@
     <title>Mine Sweeper</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body onload="onInit()" oncontextmenu="return false">
-    <h1>Mine Sweeper Game</h1>
+
+<body onload="onInit()">
+
+    <h1><span>Life: 💛💛💛</span>Mine Sweeper Game</h1>
 
     <div class="levels">
-        <button onclick="changeLevel('Beginner')">Beginner</button>
-        <button onclick="changeLevel('Medium')">Medium</button>
-        <button onclick="changeLevel('Expert')">Expert</button>
+        <button onclick="onChangeLevel('Beginner')">Beginner</button>
+        <button onclick="onChangeLevel('Medium')">Medium</button>
+        <button onclick="onChangeLevel('Expert')">Expert</button>
     </div>
 
-    <h2>Your time: <span>0.000</span></h2>
+    <div class="bar">
+        <h2>Your time: <span>0.000</span></h2>
+        <button class="emojiBtn" onclick="onInit()">😃</button>
 
-    <div class="board-container"></div>
+    </div>
+
+    <div class="board-container" oncontextmenu="return false"></div>
 
     <div class="modal">
         <button onclick="onCloseModal()">play again</button>
         <h2>Game Over!</h2>
     </div>
-    
+
+    <div class="footer">
+        <p>Ⓒ Linoy Alkalay</p>
+    </div>
+
     <!-- <button oncontextmenu="cellClickedMenu(this)">blaaa</button> -->
     <script src="js/utils.js"></script>
     <script src="js/initial.js"></script>
-    <script src="js/game.js"></script>  
+    <script src="js/game.js"></script>
 </body>
+
 </html>
