@@ -24,36 +24,35 @@ function cellClicked(elCell, i, j) {
             value = MINE_IMG
             elCell.classList.remove('shown')
             elCell.classList.add('mine')
+            renderCell({ i, j }, value)
         } else {
-            if (cell.minesAroundCount) {
-                value = cell.minesAroundCount
-            } else {
-                CascadingOpenCell(gBoard, i, j)
-                value = ''
-            }
+            expandShown(gBoard, elCell, i, j)
         }
-        renderCell({ i, j }, value)
     }
 
     checkGameOver(cell)
 }
 
-function CascadingOpenCell(mat, cellI, cellJ) { // TODO: improve!!!!
-    var value = null
-    for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= mat.length) continue
-        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-            if (i === cellI && j === cellJ) continue
-            if (j < 0 || j >= mat[i].length) continue
-            const cell = mat[i][j]
-            if (cell.minesAroundCount) value = cell.minesAroundCount
-            else value = ''
-            if (!cell.isShown) gShownCellCount++
-            cell.isShown = true
-            const elCell = document.querySelector(`.cell-${i}-${j}`)
-            elCell.classList.add('shown')
-            renderCell({ i, j }, value)
-        }
+function expandShown(board, elCell, i, j) {
+    if (i < 0 || i > board.length || j < 0 || j > board[0].length) return
+    const cell = board[i][j]
+    if (cell.minesAroundCount) {
+        console.log('cell:', cell)
+        cell.isShown = true
+        elCell.classList.add('shown')
+        renderCell({ i, j }, cell.minesAroundCount)
+        return
+    } 
+    // if (cell.minesAroundCount === 0 && !cell.isShown) {
+    if (cell.minesAroundCount === 0) {
+        console.log('cell:', cell)
+        cell.isShown = true
+        elCell.classList.add('shown')
+        renderCell({ i, j }, '')
+        expandShown(board, i + 1, j)
+        expandShown(board, i - 1, j)
+        expandShown(board, i, j + 1)
+        expandShown(board, i, j - 1)
     }
 }
 
@@ -86,6 +85,7 @@ function checkGameOver(cell) {
     }
 }
 
+
 function endGame(boolean) {
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[0].length; j++) {
@@ -103,3 +103,27 @@ function endGame(boolean) {
         }
     }
 }
+
+// TODO: When user clicks a cell with no mines around, we need to open not only that cell, but also its neighbors.
+// TODO NOTE: start with a basic implementation that only opens the non-mine 1st degree neighbors
+// TODO BONUS: if you have the time later, try to work more like the real algorithm (see description at the Bonuses section below)
+
+function CascadingOpenCell(mat, cellI, cellJ) { // TODO: improve!!!!
+    var value = null
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= mat.length) continue
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (i === cellI && j === cellJ) continue
+            if (j < 0 || j >= mat[i].length) continue
+            const cell = mat[i][j]
+            if (cell.minesAroundCount) value = cell.minesAroundCount // V
+            else value = '' // V
+            if (!cell.isShown) gShownCellCount++
+            cell.isShown = true // V
+            const elCell = document.querySelector(`.cell-${i}-${j}`) // V
+            elCell.classList.add('shown') // V
+            renderCell({ i, j }, value) // V
+        }
+    }
+}
+

@@ -10,16 +10,15 @@ const FLAG_IMG = '<img src="img/flag.png">'
 
 // This is called when page loads
 function onInit(level = { size: 4, mines: 2 }) {
-    const elEmojiBtn = document.querySelector('.emojiBtn')
-    elEmojiBtn.innerText = '😃'
-    
     if (gIntervalTimer) clearInterval(gIntervalTimer)
     resetTime()
+    const elEmojiBtn = document.querySelector('.emojiBtn')
+    elEmojiBtn.innerText = '😃'
     gShownCellCount = 0
+    // gMineClicked = 1
     gFirstClick = true
     gLevel = level
     gBoard = buildBoard(gLevel)
-    console.log('gBoard:', gBoard)
     renderBoard(gBoard, '.board-container')
 }
 
@@ -34,7 +33,6 @@ function buildBoard(gLevel) {
             board[i][j] = createCell()
         }
     }
-
     addMines(board, gLevel)
     setMinesNegsCount(board)
     return board
@@ -58,7 +56,6 @@ function addMines(gBoard, gLevel) {
 // DONE: Count mines around each cell and set the cell's minesAroundCount -> neighborLoop
 function neighborLoop(mat, cellI, cellJ) {
     if (mat[cellI][cellJ].isMine) return
-
     var neighborsCount = 0
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= mat.length) continue
@@ -73,7 +70,6 @@ function neighborLoop(mat, cellI, cellJ) {
 }
 
 function renderBoard(mat, selector) {
-
     var strHTML = '<table border="0"><tbody>'
     for (var i = 0; i < mat.length; i++) {
         strHTML += '<tr>'
@@ -82,7 +78,7 @@ function renderBoard(mat, selector) {
             var className = `cell cell-${i}-${j}`
 
             strHTML += `\t<td class="${className}" onclick="cellClicked(this,${i},${j})" 
-            oncontextmenu="cellMarked(this,${i},${j})">\n`
+            oncontextmenu="cellMarked(${i},${j})">\n`
 
             if (cell.isMarked) strHTML += FLAG_IMG
             if (cell.isMine && cell.isShown) strHTML += MINE_IMG
@@ -120,6 +116,5 @@ function onChangeLevel(level) {
         gLevel.size = 12
         gLevel.mines = 32
     }
-
     onInit(gLevel)
 }
