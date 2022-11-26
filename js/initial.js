@@ -18,10 +18,13 @@ function onInit(level = { size: 4, mines: 2 }) {
     if (gIntervalTimer) clearInterval(gIntervalTimer)
     resetTime()
     const elEmojiBtn = document.querySelector('.emojiBtn')
-    const elH4A = document.querySelector('h4 a')
+    const elH4Spans = document.querySelectorAll('h4 span')
+    elH4Spans[0].innerText = '💛 💛 💛'
+    // const elH4A = document.querySelector('h4 a')
+    // elH4A.innerText = '💛 💛 💛'
     elEmojiBtn.innerText = '😃'
-    elH4A.innerText = '💛 💛 💛'
     gLivesCount = 3
+    gHintCount = 3
     gFirstClick = true
     gGame.shownCount = 0
     gGame.markedCount = 0

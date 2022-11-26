@@ -42,16 +42,20 @@ function startTimer() {
     gStartTime = Date.now()
     gIntervalTimer = setInterval(() => {
         const seconds = (Date.now() - gStartTime) / 1000
-        var elH4Span = document.querySelector('h4 span')
-        elH4Span.innerText = seconds.toFixed(3)
+        const elH4Spans = document.querySelectorAll('h4 span')
+        elH4Spans[2].innerText = seconds.toFixed(3)
+        // var elH4Span = document.querySelector('h4 span')
+        // elH4Span.innerText = seconds.toFixed(3)
     }, 1)
 }
 
 // !
 function resetTime() {
     clearInterval(gIntervalTimer)
-    var elH4Span = document.querySelector('h4 span')
-    elH4Span.innerText = '0.000'
+    const elH4Spans = document.querySelectorAll('h4 span')
+        elH4Spans[2].innerText = '0.000'
+    // var elH4Span = document.querySelector('h4 span')
+    // elH4Span.innerText = '0.000'
 }
 
 // !
@@ -62,9 +66,22 @@ function drawNum(nums) {
     return num
 }
 
+//!
+function revaleMine(cell, elCell, i, j) {
+    cell.isShown = true
+    elCell.classList.add('mine')
+    renderCell({ i, j }, MINE_IMG)
+}
+
+//!
+function revaleCell(cell, elCell, i, j) {
+    cell.isShown = true
+    elCell.classList.add('shown')
+    renderCell({ i, j }, cell.minesAroundCount)
+}
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////
 
 // Returns the class name for a specific cell
 function getClassName(location) {

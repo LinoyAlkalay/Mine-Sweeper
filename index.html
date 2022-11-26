@@ -11,6 +11,12 @@
 
 
 <body onload="onInit()">
+    <div class="switch-contauner">
+        <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider" onclick="onSwitchMode()"></span>
+        </label>
+    </div>
     <h1>Mine Sweeper Game</h1>
 
     <div class="levels">
@@ -22,7 +28,6 @@
     <div class="bar">
         <button class="emojiBtn" onclick="onInit()">😃</button>
     </div>
-    <!-- <p class="heart">Life: </p> -->
 
     <div class="board-container" oncontextmenu="return false"></div>
 
@@ -32,17 +37,22 @@
     </div>
 
 
-    <h4 class="life"><a>💛 💛 💛</a> <span>0.000</span></h4>
-    <!-- <h4 class="life">Life: <span>0.000</span></h4> -->
+    <!-- <h4 class="life"><a>💛 💛 💛</a><span>0.000</span></h4> -->
+    <h4>
+        <span>💛 💛 💛</span>
+        <span class="light-bulbs" onclick="onHint()">💡 💡 💡</span>
+        <span>0.000</span>
+    </h4>
 
+    <div class="space"></div>
     <div class="footer">
         <p>Ⓒ Linoy Alkalay</p>
     </div>
 
-    <!-- <button oncontextmenu="cellClickedMenu(this)">blaaa</button> -->
     <script src="js/utils.js"></script>
     <script src="js/initial.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/features.js"></script>
 </body>
 
 </html>

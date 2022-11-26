@@ -4,11 +4,17 @@
 var gStartTime
 var gIntervalTimer
 var gFirstClick = true
-var gLivesCount = 3
 
 // DONE: Called when a cell (td) is clicked
 function cellClicked(elCell, i, j) {
     const cell = gBoard[i][j]
+
+    // if(isHint) {
+    //     const cellsHints = revaleNeighborHint(i, j)
+    //     const hintSetTime = setTimeout(() => {
+    //         unRevaleNeighborHint(cellsHints)
+    //     }, 1000)
+    // }
 
     if (gFirstClick) {
         addMines(gBoard, gLevel, i, j)
@@ -18,37 +24,17 @@ function cellClicked(elCell, i, j) {
     }
 
     if (!cell.isMarked) {
-        var value = null
         if (cell.isMine) {
-            if (gLivesCount === 0) {
-                cell.isShown = true
-                value = MINE_IMG
-                elCell.classList.add('mine')
-                renderCell({ i, j }, value)
-            } else {
-                liveDecrease()
-            }
+            if (gLivesCount === 0) revaleMine(cell, elCell, i, j)
+            else liveDecrease()
         } else {
             if (cell.minesAroundCount) {
                 gGame.shownCount++
-                cell.isShown = true
-                value = cell.minesAroundCount
-                elCell.classList.add('shown')
-                renderCell({ i, j }, value)
-            } else {
-                expandShown(i, j)
-            }
+                revaleCell(cell, elCell, i, j)
+            } else expandShown(i, j)
         }
         checkGameOver(cell)
     }
-}
-
-function liveDecrease() {
-    gLivesCount--
-    const elH4A = document.querySelector('h4 a')
-    if(gLivesCount === 2) elH4A.innerText = '💛 💛'
-    else if(gLivesCount === 1) elH4A.innerText = '💛'
-    else if(gLivesCount === 0) elH4A.innerText = ''
 }
 
 function expandShown(i, j) {
@@ -78,9 +64,7 @@ function neighborLoopOpenNum(cellI, cellJ) {
             const cell = gBoard[i][j]
             if (cell.minesAroundCount > 0 && !cell.isCounted) {
                 const elCell = document.querySelector(`.cell-${i}-${j}`)
-                cell.isShown = true
-                elCell.classList.add('shown')
-                renderCell({ i, j }, cell.minesAroundCount)
+                revaleCell(cell, elCell, i, j)
                 cell.isCounted = true
                 gGame.shownCount++
             }
@@ -99,7 +83,6 @@ function cellMarked(i, j) {
     if (!cell.isMarked) {
         renderCell({ i, j }, FLAG_IMG)
         if(cell.isMine) gGame.markedCount++
-
     } else {
         renderCell({ i, j }, '')
         if(cell.isMine) gGame.markedCount--
@@ -125,10 +108,8 @@ function victory(elEmojiBtn) {
                 cell.isMarked = true
                 renderCell({ i, j }, FLAG_IMG)
             } else if(!cell.isMine && !cell.isShown) {
-                cell.isShown = true
                 const elCell = document.querySelector(`.cell-${i}-${j}`)
-                elCell.classList.add('shown')
-                renderCell({ i, j }, cell.minesAroundCount)
+                revaleCell(cell, elCell, i, j)
             }
         }
     }
@@ -141,17 +122,11 @@ function lose(elEmojiBtn) {
         for (var j = 0; j < gBoard[0].length; j++) {
             const cell = gBoard[i][j]
             if (cell.isMine && !cell.isShown) {
-                cell.isShown = true
                 const elCell = document.querySelector(`.cell-${i}-${j}`)
-                elCell.classList.add('mine')
-                renderCell({ i, j }, MINE_IMG)
+                revaleMine(cell, elCell, i, j)
             }
         }
     }
     onOpenModal(false)
 }
-
-
-
-
 
